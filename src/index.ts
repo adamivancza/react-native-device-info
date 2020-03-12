@@ -811,22 +811,14 @@ export function hasNotch() {
 let firstInstallTime: number;
 export async function getFirstInstallTime() {
   if (!firstInstallTime) {
-    if (Platform.OS === 'android' || Platform.OS === 'windows') {
-      firstInstallTime = await RNDeviceInfo.getFirstInstallTime();
-    } else {
-      firstInstallTime = -1;
-    }
+    firstInstallTime = await RNDeviceInfo.getFirstInstallTime();
   }
   return firstInstallTime;
 }
 
 export function getFirstInstallTimeSync() {
   if (!firstInstallTime) {
-    if (Platform.OS === 'android' || Platform.OS === 'windows') {
-      firstInstallTime = RNDeviceInfo.getFirstInstallTimeSync();
-    } else {
-      firstInstallTime = -1;
-    }
+    firstInstallTime = RNDeviceInfo.getFirstInstallTimeSync();
   }
   return firstInstallTime;
 }

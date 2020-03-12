@@ -752,6 +752,28 @@ RCT_EXPORT_METHOD(getAvailableLocationProviders:(RCTPromiseResolveBlock)resolve 
     resolve(self.getAvailableLocationProviders);
 }
 
+- (double) getFirstInstallTime {
+    NSURL* urlToDocumentsFolder = [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
+    NSError *error;
+    NSDate *installDate = [[[NSFileManager defaultManager] attributesOfItemAtPath:urlToDocumentsFolder.path error:&error] objectForKey:NSFileCreationDate];
+    if (error != nil) {
+        return -1;
+    }
+    return [installDate timeIntervalSince1970] * 1000;
+}
+
+RCT_EXPORT_BLOCKING_SYNCHRONOUS_METHOD(getFirstInstallTimeSync) {
+    return @(self.getFirstInstallTime);
+}
+
+RCT_EXPORT_METHOD(getFirstInstallTime:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
+    long result = self.getFirstInstallTime;
+    if (result == -1) {
+        reject(@"fetch_error", @"task_info failed", nil);
+    } else {
+        resolve(@(result));
+    }
+}
 
 - (void)dealloc
 {
